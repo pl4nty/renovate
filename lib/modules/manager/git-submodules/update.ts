@@ -13,7 +13,12 @@ export default async function updateDependency({
   const submoduleGit = Git(upath.join(localDir, upgrade.depName));
 
   try {
-    await git.submodule('set-branch', '--branch', upgrade.newValue!);
+    await git.subModule([
+      'set-branch',
+      '--branch',
+      upgrade.newValue!,
+      upgrade.depName!,
+    ]);
     await git.submoduleUpdate(['--init', upgrade.depName!]);
     await submoduleGit.checkout([upgrade.newDigest!]);
     return fileContent;
